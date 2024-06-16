@@ -1,0 +1,148 @@
+D:\Aung Aung\Ebooks\001-100.pdf
+
+stop at page 90
+
+
+OO Basics
+Abstraction
+Encapsulation
+Polymorphism
+Inheritance
+
+OO Principles
+Encapsulate what varies
+Favour composition over inheritance
+Program to interfaces, not implementation
+
+
+OO Patterns
+Strategy 
+- defines a family of algorithm, encapsulates each one make them interchangeable.
+-lets the algorithm vary independently from clients that use it.
+
+ 
+
+Strategy Pattern
+Observer Pattern => one to many
+
+
+Decorator Pattern
+
+
+Open Closed Principles
+Clasees Open for extension Closed for modification
+
+
+The Decorator Pattern defined, know as wrapper
+Enhanced existing behaviour of an object at runtime without destroying the existing interface of the object
+enhancement of existing behaviour of an object
+
+
+The Decorator Pattern attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to
+subclassing for extending functionality.
+
+One Abstract class with Categories(4) 
+Extends abstract class by ComputationDecorator class 
+Decorator class extends ComputationDecorator
+Each Decorator class has a abstract class that is to be initialized via run time
+
+
+to achieve the type matching, but we aren’t using inheritance to get behavior.
+
+With composition, we can mix and match decorators any way we like... at runtime
+
+If there is abstract class, we aren't allowed to modified those class
+use decorator pattern
+always try to avoid altering existing code
+
+
+Todo: coding 
+D:\Aung Aung\Ebooks\101-200.pdf => Page 34
+
+
+decorator + factory pattern =>
+
+
+Real World Decorators: Java I/O
+
+Example
+InputStream in =new LowerCaseInputStream(new BufferedInputStream(new FileInputStream(“test.txt”)));
+
+Composition and delegation can often be used to add new behaviors at runtime.
+The Decorator Pattern provides an alternative to subclassing for extending behavior.
+
+The Decorator Pattern involves a set of decorator classes that are used to wrap concrete components.
+
+Loosely Couple OO Design
+instantiation is an activity that shouldn't do it public, will lead to coupling problems
+
+
+When you see new => think concrete => instantiation concrete class
+
+If you have whole set of concrete class that need to be instantiate
+Example
+
+Duck duck;
+if(picnic) duck = new MallardDuck();
+else if(huntin) duck = new DecoyDuck();
+….
+
+
+implment an interface => implement java interface using "interface" keyword
+concrete class implementing a method from a supertype (which could be class or interface) => SAME AS IMPLEMENT AN INTERFACE
+
+
+D:\Aung Aung\Ebooks\101-200.pdf => Page 55
+
+Factory Pattern
+If there is two factory need to provide
+
+subclass will decide creation of Pizza factory
+
+D:\Aung Aung\Ebooks\101-200.pdf => Page 66 have overview diagram
+Concrete classes
+NYPizzastore(factory method, concrete creator) extends abstract PizzaStore (The abstract creator class)
+ChicagoPizzastore(factory method, concrete creator) extends abstract PizzaStore 
+
+Product Classes
+NYStyleCheesePizza extends abstract Pizza
+ChicacoStyleCheesePizza extends abstract Pizza
+
+D:\Aung Aung\Ebooks\101-200.pdf => Page 67
+Parallel class hierachies
+
+
+Dependency Inversion Principle
+Depend upon abstraction. Do not depend upon concrete classes.
+Program to an interface, not an implementation
+
+High level components should not depend on low level components
+
+PizzaStore => high level
+Pizza impl => low level
+Pizza Store is depends on concrete pizza classes
+
+Dependency Inversion Principle
+D:\Aung Aung\Ebooks\101-200.pdf => Page 78
+A few guide line to follow the principle
+1.No variable should hold a reference to a concrete class
+2.No class should derive from a concrete class
+3.No method should override an implemented method of any of its base classes.
+
+D:\Aung Aung\Ebooks\101-200.pdf => Page 80 stop
+
+D:\Aung Aung\Ebooks\101-200.pdf
+94 to 97 have good explanation of abstract factory and  factory method
+Abstract Factory and  factory method both pattern encapsulate object creation and allow you to decouple your code from concrete types
+
+201-300.pdf
+One of a kind Objects => Singleton
+17 stop
+
+
+
+
+201-300.pdf Page 32 page 58
+Command pattern
+allows you to decouple the requestor of an action from the object that perform action.
+Requestor would be remote control and the obj that performs the action would be an instance of one of your vendor classes

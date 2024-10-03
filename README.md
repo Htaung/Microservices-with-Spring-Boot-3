@@ -260,6 +260,8 @@ D:\Aung Aung\Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition
 Page 61 stop
 Page 52 to start coding
 
+just import the folder from D:\Learning\Microservices-with-Spring-Boot-and-Spring-Cloud-Third-Edition\Chapter03\2-basic-rest-services
+
 
 Describing a RESTful API in a Java interface instead of directly in the Java class is, to me, a good way of separating
 the API definition from its implementation. We
@@ -268,13 +270,24 @@ Page 61 stop at 30 March 2024
 
 Page 71 stop at 30 March 2024
 
-Page 76  need to learn about bash script
-D:\LearningProjects\2-basic-rest-services\test-em-all.bash
+
+curl http://192.168.238.199:7000/product-composite/1 -s | jq .
+
+curl http://192.168.238.199:7000/product-composite/13 -i
+
+curl http://192.168.238.199:7000/product-composite/113 -s | jq .
+
+curl http://192.168.238.199:7000/product-composite/213 -s | jq .
+
+curl http://192.168.238.199:7000/product-composite/-1 -s | jq .
+
+curl http://192.168.238.199:7000/product-composite/dfsf -s | jq .
+
+Adding automated microservice tests in isolation
+Page 73
 
 
-Page 80 To page 102 will skip of  Deploying Our Microservices Using Docker as I don't have own laptop
 
-Gradle build jar located in D:\LearningProjects\2-basic-rest-services\microservices\product-service\build\libs
 
 Chapter 21 installation instructions for mac OS
 • Chapter 22 installation instructions for Microsoft Windows with WSL 2 and Ubuntu

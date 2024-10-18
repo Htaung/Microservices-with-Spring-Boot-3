@@ -666,7 +666,325 @@ alternative => gdisk , parted
 fdisk not support GPT
 fdisk /path/to/device
 
-Stop 
-here
-D:\From External Drive\Udemy Courses\[FreeCourseLab.com] Udemy - Linux Administration Bootcamp Go from Beginner to Advanced\6. Disk Management
-2. Disk Management - Part Two - Creating Partitions with fdisk
+
+
+#list of devices
+fdisk -l | less
+
+fdisk /dev/sda
+
+
+File System
+ext= extended file system
+ext2,ext3, ext4 are later release
+
+Other File System
+ReiserFS
+JFS
+XFS
+ZFS
+Btrfs
+
+to create file System
+mkfs -t TYPE Device
+
+mkfs -t ext3 /dev/sda1
+mkfs -t ext4 /dev/sda1
+
+ls -l /sbin/mkfs*
+
+MOUNTING with Mount
+mount DEVICE MONUT_POINT
+mount /dev/sdb2 /opt
+
+in order to make mount persistent
+add entry in /etc/fstab
+
+umount /opt
+umount /dev/sdb1
+
+Preparing swap space
+mkswap /dev/sdb1
+
+#enable swap partition
+swapon /dev/sdb1
+
+#list swap device
+swapon -s
+
+#viewing label and uuid
+lsblk -f 
+blkid
+
+
+
+LVM
+Logical volume manager
+
+
+easily resize storage while online
+online data relocation
+easily migrate data from one storage device to another while online
+
+snapshot
+Create point in time snapshot of your file systems - consistent backup
+
+Skip
+D:\From External Drive\Udemy Courses\[FreeCourseLab.com] Udemy - Linux Administration Bootcamp Go from Beginner to Advanced\7. LVM - The Logical Volume Manager
+
+#User Management
+format of /etc/passwd
+userName:password:UID:GID:comments:home_dir:shell
+
+root:x:0:0:root:/root:/bin/bash
+
+custom for username => < 8 characters
+ps -fu aung 
+
+#enctyped passwd are store in etc/shadow
+sudo su
+cat /etc/shadow
+
+uid  stored in /etc/login.defs
+
+user can switch group by using newgrp
+newgrp for new group
+
+list of available shells are /etc/shells
+99999 user dont't need to change passwd
+aung:$y$j9T$ZW4XzvqDC7bYqGG94CPZy1$MfvLAbbGRTIy2KG.9Ezn22q5ta1V2O0vO.FCeJo0.KA:20003:0:99999:7:::
+
+to prevent interactive use of an account, use /usr/bin/nologin or /bin/false as shell
+
+
+
+useradd option userName
+-c "Comments"
+-m Create home dir
+-s /shell/path => the path to user's shell
+
+
+
+passwd aung => change pwd or create new pwd
+tail -1 /etc/shadow  #store encryped password
+tail -1 /etc/passwd
+useradd aung -g grpName
+
+useradd -c "Grant" -m -s /bin/bash grant
+passwd grant
+
+useradd -c "Kaung" -m -s /bin/bash -g aung -G aaProject
+useradd -c "Kaung" -m -s /bin/bash -g aung
+
+/etc/skell contains shell config(.profile,.bashrc,etc)
+
+More userAdd options
+-r Create system account
+-d /home/dir => specify home Directory
+userdel userName
+
+#delete home dir 
+userdel -r grant
+
+#to change existing user account
+usermod options userName
+usermod -c "Aung Aung" aung
+
+-c "COMMENTS" comments account
+-g GROUP specify default group
+-G GROUP1,GRP1 Additional GRP1
+-s /shell/path Path to user's shell
+
+grep mysql /etc/passwd
+mkdir /opt/apache1
+useradd -c "Apache web server user" -d /opt/apache1 -r -s /usr/sbin/nologin apache1
+
+
+useradd -c "Apache web server user" -d /opt/apache1 -r -s /usr/sbin/nologin apache1
+useradd -c "Apache web server user" -d /opt/apache1 -r -s /bin/bash apache2
+
+
+#Format of /etc/group file:
+grp_name:pwd:GID:account1,accountN
+
+adm:x:4:syslog,aung
+root:x:0:
+aung:x:1000:
+
+#to get group by username
+groups root
+
+#to create group 
+groupadd web
+tail -1 /etc/group
+
+#to delete
+groupdel grp_name
+
+#to change existing group
+groupmod [options] gp_name
+-g GID
+-n rename group 
+
+groupadd writers
+groupadd tv
+groupadd movie
+tail -3 /etc/group
+
+useradd -c "Carlton Cuse" -g writers -G tv -m -s /bin/bash ccuse
+passwd ccuse
+groups ccuse
+
+useradd -c "David fury" -g writers -G tv -m -s /bin/bash fury
+passwd fury
+groups fury
+
+useradd -c "Matt Damon" -g writers -G movies -m -s /bin/bash damon
+passwd damon
+groups damon
+
+useradd -c "Ben Affleck" -g writers -G movies,tv -m -s /bin/bash affleck
+
+
+#network
+
+#TCP/IP
+TCP => controls data exchange
+IP => sends data from one device to another
+HOSTS => devices on a network that have an IP Address
+
+#IP Networking
+IP Address => exmaple => 192.168.1.1
+subnet mask => exmaple => 255.255.255.0
+brocast address => exmaple => 192.168.1.1
+octlet.octlet.octlet.octlet => octlet value can be from 0 t0 255 => 8bits
+
+first part => network Address
+second => host address
+Address Classes => used to determine the network address and host address
+
+#Classful Network
+Class A => 1.0 => 127.0 => ex. 17.24.88.9 => allowed hosts => 16,777,216
+Class A => 128.0 => 191.255 => ex. 183.194.46.31 => allowed hosts => 65536
+Class C => 192.0.0 => 233.255.255 => ex. 199.83.131.86 => allowed hosts => 255
+
+#Subnet masks
+Class A => 255.0.0.0 => first one is network addess and last 3 is host address
+Class B => 255.255.0.0 => first and second is network address and last 2 is host address
+Class C => 255.255.255.0 => first 3 is network address and last 1 is host address
+
+#Broadcast Address, Classless Inter-Domain Routing / CIDR
+check in below link 
+D:\From External Drive\Udemy Courses\[FreeCourseLab.com] Udemy - Linux Administration Bootcamp Go from Beginner to Advanced\9. Networking\1. TCPIP Networking for Linux System Administrators.mp4
+
+#Reserved Private Address space => Non Routable private network
+		   Range					 => Private Address Space	
+Class A => 1.0.0.0 - 127.255.255.255 => 10.0.0.0 - 10.255.255.255
+Class A => 128.0.0.0 - 191.255.255.255 => 172.16.0.0 - 172.31.255.255
+Class C => 192.0.0.0 - 233.255.255.255 => 192.168.0.0.0 - 192.168.255.255
+
+#DNS and host address
+
+#Determine ip address
+ip address
+ip addr
+ip a 
+ip address show 
+ip a s
+ifconfig
+
+
+lo   => loop back address => 127.0.0.1/8
+eth0 => actual h/w address
+
+
+#DNS hostnames
+FQDN => fully qualified domain name => webprod01.mycompany.com
+TLD => .com,.net,.org, etc
+DOMAINS => left of TLD => google
+sub domains => left of domain => webprod01.ny.us.mycompany.com
+
+#get host name
+hostname
+uname -n
+
+#fully qualified name
+hostname -f 
+
+#setting hostname
+hostname webprod1
+echo 'webprod1' > /etc/hostname
+vi /etc/sysconfig/network
+
+#Resolving dns name
+host www.google.comho
+
+/etc/hosts is local to your linux system
+
+#NSS Name Service Switch => Controls the search order for resolutions
+/etc/nsswitch.conf
+
+hosts: files dns
+hosts: file nis dns
+
+Network ports
+1 => 1023 are well know ports
+22 => SSH
+25 => SMTP
+80 => HTTP
+143 => IMAP
+389 => LDAP
+443 => HTTPS
+
+
+/etc/services
+=> Map port names to port numbers
+ssh 22/tcp
+
+DHCP => dynamic host configuration protocol
+DHCP Servers assigns ip address to DHCP clients
+ip address, netmask, gateway, DNS Servers
+Each ip is leased from the pool of IP Address the DHCP server manages
+
+configuring dhcp client - RHEL
+/etc/sysconfig/network-scripts/*
+
+configuring dhcp client on Ubuntu
+/etc/network/interfaces
+
+#Assigning static ip - RHEL
+/etc/sysconfig/network-scripts/ifcfg-eth0
+
+#manualy assign ip address
+ifconfig NETWORK_DEVICE addr netmask subnet-mask
+ifconfig eth0 10.11.12.13
+ifconfig eth0 10.11.12.13 netmask 255.255.255.0
+ifconfig eth0 up
+
+ifup and ifdown can be used instead
+
+
+
+ping host
+ping -c 3 host #3 package to host
+
+rtt => round trip time 
+
+traceroute -n google.com
+#translate ip to dns name, if you see * => router is blocking
+
+tracepath -n google.com
+
+#Packet sniffing with tcpdump
+tcpdump
+
+-n Display numerical address and port
+-A ASCII text output
+-v
+-vvv
+
+telnet host portno
+
+
+
+D:\From External Drive\Udemy Courses\[FreeCourseLab.com] Udemy - Linux Administration Bootcamp Go from Beginner to Advanced\10. Advanced Linux Permissions

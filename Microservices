@@ -1,0 +1,221 @@
+
+
+docker-compose up -d => start all containers, -d run in background
+docker-compose down => stop and remove all containers
+docker-compose logs -f --tail=0 => Print out logs from all containers
+
+
+https://docs.docker.com/compose/reference/
+
+
+Spring skeleton
+
+Spring boot => 3.2.11
+Java => 17
+Packaging => Jar
+name => product-service
+package-name => se.mangus.microservices.core.product
+groupId => se.mangus.microservices.core.product
+dependencies => actuator,webflux
+
+
+<modules>
+  	<module>product-service</module>
+  	<module>product-composite-service</module>
+	<module>recommendation-service</module>
+	<module>review-service</module>
+</modules
+
+To list created file
+find microservices/product-service -type f
+
+
+
+
+Spring Cloud Stream
+Message
+Publisher => supplier
+Subscriber => Consumer
+Destination
+Binder => 
+
+
+
+
+docker run -it ubuntu
+ docker run --rm -it centos
+
+
+-- to get rid of them all,
+docker rm -f $(docker ps -aq)
+
+docker rm -f command stops and removes the containers whose container IDs are
+specified by the command. The docker ps -aq command lists the container IDs of all
+the running and stopped containers in Docker Engine. The -q option reduces the output
+from the docker ps command so that it only lists the container IDs
+
+
+Running Java in Docker
+
+Offficial Docker image for Java comes from the OpenJDK project: https://hub.docker.
+com/_/openjdk/. 
+
+Limiting available CPUs
+
+ by sending the Java statement Runtime.getRuntime().
+availableprocessors() to the Java CLI tool jshell. We will run jshell in a container using the
+Docker image that contains the full Java 17 JDK. The Docker tag for this image is eclipse-temurin:17.
+The command looks like this:
+
+echo 'Runtime.getRuntime().availableProcessors()' | docker run --rm -i eclipse-temurin:17 jshell -q
+
+ docker run --rm -it eclipse-temurin
+ docker run  -it eclipse-temurin
+ 
+ $1 ==> 22
+ $1 ==> 8
+ the response of 8 cores is as expected
+ 
+ 
+ restrict the Docker container to only be allowed to use three CPU cores using the --cpus
+3 Docker option, then ask the JVM about how many available processors it sees
+
+echo 'Runtime.getRuntime().availableProcessors()' | docker run --rm -i --cpus=3 eclipse-temurin:17 jshell -q
+
+docker run  -it --cpus=4 eclipse-temurin:17 
+docker run  -it --cpus=4 eclipse-temurin:17
+
+
+Limiting available memory
+docker run -it --rm eclipse-temurin:17 java -XX:+PrintFlagsFinal | grep "size_t MaxHeapSize"
+-- size_t MaxHeapSize
+-- get 4 gb 
+
+
+docker run -it --rm -m=1024M eclipse-temurin:17 java -XX:+PrintFlagsFinal | grep "size_t MaxHeapSize"
+-- size_t MaxHeapSize                              = 268435456
+-- 268,435,456 bytes =>  268,435,456 / 1024 / 1024 = 256 MB. 256 MB is one-quarter of 1 GB, 
+
+
+ -- set the max heap size on the JVM ourselves
+ -- to use 600 MB of the total 1 GB we have for its heap,
+docker run -it --rm -m=1024M eclipse-temurin:17 java -Xmx600m -XX:+PrintFlagsFinal -version | grep "size_t MaxHeapSize"
+-- 629,145,600 bytes = 629,145,600 / 1024 / 1024 = 600 MB,
+
+
+-- out of memory test in docker
+-- allocate a byte array of 100 MB:
+echo 'new byte[100_000_000]' | docker run -i --rm -m=1024M eclipse-temurin:17 jshell -q
+-- $1 ==>, meaning that it worked fine!
+
+-- allocate 500 MB that is more than max heap size Xmx600m to get out of memory error
+echo 'new byte[500_000_000]' | docker run -i --rm -m=1024M eclipse-temurin:17 jshell -q
+
+
+. Values in a profile override values from the default profile. By
+using YAML files, multiple Spring profiles can be placed in the same file, separated by ---
+
+https://www.baeldung.com/spring-boot-docker-images
+
+https://stackoverflow.com/questions/28192761/spring-maven-clean-error-the-requested-profile-pom-xml-could-not-be-activate
+
+cd microservices/product-service
+docker build -t product-service .
+docker images | grep product-service
+
+docker run --rm -p8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" product-service
+
+
+Running the container in detached mode
+docker run -d -p8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" --name my-prd-srv product-service
+docker logs my-prd-srv -f
+docker ps
+docker rm -f my-prd-srv
+
+#to see list of container
+docker container ls -al
+
+#to run existing docker container
+docker start containerId
+
+ openjdk:17-jdk-alpine
+
+
+## Managing a landscape of microservices using Docker Compose
+
+
+
+Buildpacks
+Buildpacks are a tool that provides framework and application dependencies.
+./mvnw spring-boot:build-image
+
+One of the great features of buildpacks is that the Docker image is multiple layers. 
+So if we only change our application code, subsequent builds will be much faster:
+
+
+fat jar is composed of 3 main areas:
+Bootstrap classes required to launch the Spring application
+Application code
+3rd party libraries
+
+layers.idx file that maps each directory in the fat jar to a layer:
+
+Out-of-the-box, Spring Boot provides four layers:
+
+dependencies: typical dependencies from third parties
+snapshot-dependencies: snapshot dependencies from 3rd parties
+resources: static resources
+application: application code and resources
+
+
+Creating layer jars
+<configuration>
+	<layers>
+		<enabled>true</enabled>
+	</layers>
+</configuration>
+
+
+Viewing and Extracting Layers
+java -Djarmode=layertools -jar demo-0.0.1.jar list
+
+
+ java -Djarmode=layertools -jar product-service-0.0.1-SNAPSHOT.jar list
+ java -Djarmode=layertools -jar product-service-0.0.1-SNAPSHOT.jar extract
+ 
+ 
+ 
+
+
+mvn spring-boot:run -Pdocker-compose -Dspring-boot.run.profiles=docker-compose
+
+
+# page 95
+## Starting up the microservice landscape
+https://www.baeldung.com/docker-compose-support-spring-boot
+
+mvn spring-boot:build-image -Pdocker-compose -Dspring-boot.run.profiles=docker-compose
+
+
+ $BOOK_HOME/
+Chapter04/microservices/product-service/
+
+
+D:\Ebooks\Microservices with Spring Boot 3 and Spring Cloud_ Build resilient and scalable microservices using Spring Cloud, Istio-Packt Publishing (2023).pdf
+
+# page 95 => rebuild image again failed to read
+docker images 
+
+
+
+
+
+jcmd <you_vm_process_id> VM.flags | grep MaxHeapSize
+
+
+
+open sts with 
+D:\Projects\STS_MICROSERVICES_WORKSPACES
+
+project folder
+D:\Projects\microservices

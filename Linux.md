@@ -986,5 +986,48 @@ tcpdump
 telnet host portno
 
 
-
+Skip
 D:\From External Drive\Udemy Courses\[FreeCourseLab.com] Udemy - Linux Administration Bootcamp Go from Beginner to Advanced\10. Advanced Linux Permissions
+
+
+
+D:\From External Drive\Udemy Courses\[FreeCourseLab.com] Udemy - Linux Administration Bootcamp Go from Beginner to Advanced\11. Shell Scripting
+
+
+#Script
+
+#to check ssh is running
+ps -ef | grep sshd
+
+# check ssh-server package
+dpkg -l | grep ssh-server
+
+#install ssh-server and client
+apt-get install openssh-server openssh-client
+
+
+#to run sshd
+service ssh start
+
+service ssh status
+systemctl status ssh
+
+#to check ip addr
+ip a
+/sbin/ip addr
+
+192.168.10.124
+ssh kali@192.168.10.124
+
+#installing apache wordpress
+
+download wordpress.tar install 
+
+# find apache package apache web server
+apt-cache search apache | less
+apt-cache search mysql | grep ser | less
+apt-cache search php | grep ser | less
+
+apt-get install apache2
+apt-get install mysql-server
+apt-get install php5 php5-gd
